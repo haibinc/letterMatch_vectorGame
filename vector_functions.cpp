@@ -1,21 +1,30 @@
 //
-// Created by Haibin Cao on 9/20/22.
+// Created by Dave R. Smith on 9/8/22.
 //
-
 #include "vector_functions.h"
+
+std::vector<std::vector<char>> createArray(int row, int col)
+{
+    std::vector<std::vector<char>> v(row, std::vector<char>(col, '#'));
+
+    return v;
+}
 
 std::vector<char> getLetters(int size)
 {
     std::vector<char> letters;
     if(size % 2 == 0)
     {
-
         char a = 'A';
         for(int i=0; i<size/2; i++)
         {
             letters.push_back(a);
             letters.push_back(a++);
         }
+    }
+    else
+    {
+        std::cout << "You can not complete the match on an odd puzzle. " << std::endl;
     }
     return letters;
 }
@@ -30,6 +39,7 @@ void shuffle(std::vector<char> &v)
         v[idx] = temp;
     }
 }
+
 //fill vector with two of each letter
 void fill(std::vector<std::vector<char>> &v)
 {
@@ -44,74 +54,70 @@ void fill(std::vector<std::vector<char>> &v)
             v[i][j] = l[idx++];
         }
     }
-
 }
-void print(std::vector<std::vector<char>> v)
+
+void print(std::vector<std::vector<char>> v, std::ofstream& fout, std::string &fileName)
 {
     for (int i = 0; i < v.size(); ++i)
     {
+        fout << i+1 << ": ";
+        std::cout << i+1 << ": ";
         for (int j = 0; j < v[i].size(); ++j)
         {
+            fout.width(3);
             std::cout.width(3);
+            fout << v[i][j] << std::flush;
             std::cout << v[i][j];
         }
+        fout << std::endl;
         std::cout << std::endl;
     }
-    std::cout << std::endl;
+    fout<< "---------------------------" << std::endl;
+    std::cout << "---------------------------" << std::endl;
 }
 
-std::vector<std::vector<char>> createArray(int row, int col)
+void flipReveal(std::vector<std::vector<char>> &front, std::vector<std::vector<char>> &back, int row, int col)
 {
-    std::vector<std::vector<char>> v(row, std::vector<char>(col, '#'));
-
-    return v;
+    back[row-1][col-1] = front[row-1][col-1];
 }
 
-void reveal(std::vector<std::vector<char>> &front, std::vector<std::vector<char>> &back, int row, int col)
-{
-    for(int i=0; i<back.size(); i++)
-    {
-        for (int j=0; j <back[i].size() ; ++j)
-        {
-            std::cout.width(3);
-            if(i == row && j==col)
-            {
-
-                std::cout << front[i][j];
-            }
-            else
-            {
-                std::cout << back[i][j];
-            }
-
-        }
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;
-}
-void update(std::vector<std::vector<char>> &front, std::vector<std::vector<char>> &back, int row, int col)
-{
-    back[row][col] = front[row][col];
-}
 void update(std::vector<std::vector<char>> &back, int row, int col, char value)
 {
-    back[row][col] = value;
+    back[row-1][col-1] = value;
 }
+
 void getInput(int& row, int &col)
 {
     std::cin >> row >> col;
 }
-//void flip(std::vector<std::vector<char>> v, int row, int col);
-//char getInput();
+
+void promptInput(int& row, int& col, std::string message)
+{
+    output(message);
+    getInput(row, col);
+}
+
 void output(std::string message)
 {
     std::cout << message << std::endl;
 }
-void promptInput(int& row, int& col, std::string message, std::vector<std::vector<char>> &back, std::vector<std::vector<char>> &front)
+
+void createFile(std::ofstream &fout, std::string& fileName)
 {
-    output(message);
-    getInput(row, col);
-    update(back, row, col, front[row][col]);
-    print(back);
+    fout.open(fileName);
+
+    if(fout.fail())
+    {
+        std::cout << "Could not open file";
+        exit(1);
+    }
 }
-//bool isEven(std::vector<std::vector<char>> v);
+
+void closeFile(std::ofstream& fout)
+{
+    fout.close();
+}
+
+
+
+
