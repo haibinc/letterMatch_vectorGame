@@ -14,12 +14,16 @@ void shuffle(std::vector<char> &v);
 std::vector<char> getLetters(int size);
 void fill(std::vector<std::vector<char>> &v);
 std::vector<std::vector<char>> createArray(int row, int col);
-void print(std::vector<std::vector<char>> v, std::ofstream& fout, std::string& fileName);
+void print(std::vector<std::vector<char>> v, std::ofstream& fout);
 void flip(std::vector<std::vector<char>> &v, int row, int col);
 void output(std::string message);
 void getInput(int& row, int &col);
 void flipReveal(std::vector<std::vector<char>> &front, std::vector<std::vector<char>> &back, int row, int col);
 void update(std::vector<std::vector<char>> &back, int row, int col, char value);
 void promptInput(int& row, int& col, std::string message);
+void saveFile(std::vector<std::vector<char>>& front, std::vector<std::vector<char>>& back, std::string fileName);
+void readFile(std::vector<std::vector<char>>& front, std::vector<std::vector<char>>& back, std::string fileName);
+void loadFiles(std::vector<std::vector<char>>& front, std::vector<std::vector<char>>& back, std::ofstream& fout, std::string& fileName);
+void menu(std::ofstream& fout, std::string& fileName, std::vector<std::vector<char>>& front, std::vector<std::vector<char>>& back);
 
 #endif //MATCHINGPUZZLE_VECTOR_FUNCTIONS_H
